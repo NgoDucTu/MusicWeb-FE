@@ -1,0 +1,126 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import {
+  getPlaylistApi,
+  removeSongFromPlaylistApi,
+  reorderPlaylistSongsApi,
+} from "@/lib/api/playlists.api";
+import { songThumbnailUrl } from "@/lib/api/songs.api";
+import type { PlaylistResponse, SongResponse } from "@/types";
+import SongRow from "@/components/songs/SongRow";
+import { usePlayer } from "@/contexts/PlayerContext";
+import { Play, Pause, ListMusic, GripVertical } from "lucide-react";
+import Image from "next/image";
+import { useAuth } from "@/contexts/AuthContext";
+
+export default function PlaylistDetailPage() {
+  const { id } = useParams<{ id: string }>();
+  const [playlist, setPlaylist] = useState<PlaylistResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [dragging, setDragging] = useState<number | null>(null);
+  const { play, togglePlay, currentSong, isPlaying } = usePlayer();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    getPlaylistApi(id)
+      .then((r) => setPlaylist(r.data ?? null))
+      .finally(() => setLoading(false));
+  }, [id]);
+
+  const isPlaylistPlaying =
+    isPlaying && playlist?.songs.some((s) => s.id === currentSong?.id);
+
+  const handlePlayAll = () => {
+    if (!playlist?.songs.length) return;
+    if (isPlaylistPlaying) togglePlay();
+    else play(playlist.songs[0], playlist.songs);
+  };
+
+  const handleRemove = async (song: SongResponse) => {
+    if (!playlist) return;
+    const res = await removeSongFromPlaylistApi(playlist.id, song.id);
+    if (res.success) {
+      setPlaylist((p) =>
+        p ? { ...p, songs: p.songs.filter((s) => s.id !== song.id) } : p
+      );
+    }
+  };
+
+  const handleDrop = async (dropIndex: number) => {
+    if (dragging === null || dragging === dropIndex || !playlist) return;
+    const songs = [...playlist.songs];
+    const [moved] = songs.splice(dragging, 1);
+    songs.splice(dropIndex, 0, moved);
+    setPlaylist({ ...playlist, songs });
+    setDragging(null);
+    await reorderPlaylistSongsApi(playlist.id, songs.map((s) => s.id));
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-full">
+        <div className="animate-spin w-8 h-8 border-2 border-primary border-t-transparent rounded-full" />
+      </div>
+    );
+  }
+
+  if (!playlist) {
+    return <p className="text-text-muted text-center py-20">Không tìm thấy playlist</p>;
+  }
+
+  const firstSong = playlist.songs[0];
+
+  return (
+    <div className="pb-24">
+      <div className="flex items-end gap-6 mb-8">
+        <div className="w-44 h-44 rounded-lg overflow-hidden bg-surface-highlight shrink-0">
+          {firstSong?.thumbnailUrl ? (
+            <Image src={songThumbnailUrl(firstSong.id)} alt={playlist.name}
+              width={176} height={176} className="object-cover w-full h-full" unoptimized />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-text-muted">
+              <ListMusic size={56} />
+            </div>
+          )}
+        </div>
+        <div>
+          <p className="text-xs text-text-secondary uppercase tracking-wider mb-2">Danh sách phát</p>
+          <h1 className="text-4xl font-black mb-4">{playlist.name}</h1>
+          <p className="text-text-secondary text-sm">{playlist.songs.length} bài hát</p>
+          <button onClick={handlePlayAll} disabled={!playlist.songs.length}
+            className="mt-5 w-14 h-14 rounded-full bg-primary flex items-center justify-center hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed shadow-xl">
+            {isPlaylistPlaying
+              ? <Pause size={24} className="text-black" />
+              : <Play size={24} className="text-black ml-1" />}
+          </button>
+        </div>
+      </div>
+
+      {playlist.songs.length === 0 ? (
+        <p className="text-text-muted text-sm text-center py-10">
+          Playlist trống. Thêm bài hát từ trang Bài hát.
+        </p>
+      ) : (
+        <div className="space-y-1">
+          {playlist.songs.map((song, i) => (
+            <div key={song.id} draggable
+              onDragStart={() => setDragging(i)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => handleDrop(i)}
+              className="flex items-center group">
+              <GripVertical size={16}
+                className="text-text-muted opacity-0 group-hover:opacity-100 cursor-grab shrink-0 mr-1" />
+              <div className="flex-1">
+                <SongRow song={song} index={i} queue={playlist.songs}
+                  onDelete={user ? handleRemove : undefined}
+                  showDelete={!!user} />
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

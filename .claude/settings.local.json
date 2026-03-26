@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(node -e \"const v=require\\(''''fs''''\\).readFileSync\\(''''/dev/stdin'''',''''utf8''''\\); const all=JSON.parse\\(v\\); const v15=all.filter\\(x=>x.startsWith\\(''''15.''''\\)\\); console.log\\(v15.slice\\(-10\\).join\\(''''\\\\n''''\\)\\);\")",
+      "Bash(npm view:*)",
+      "Bash(npx tsc:*)",
+      "Bash(timeout 15 npx next build)",
+      "Bash(npx next:*)",
+      "Bash(xargs head:*)"
+    ]
+  }
+}
