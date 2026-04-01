@@ -26,7 +26,7 @@ export default function MusicPlayer() {
   if (!currentSong) {
     return (
       <div className="fixed bottom-0 left-0 right-0 h-20 bg-surface-elevated border-t border-surface-highlight flex items-center justify-center">
-        <p className="text-text-muted text-sm">Chưa có bài hát nào đang phát</p>
+        <p className="text-text-muted text-sm">No song playing</p>
       </div>
     );
   }

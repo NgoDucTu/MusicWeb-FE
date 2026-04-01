@@ -9,7 +9,7 @@ interface Props {
 
 export default function AdminSongsTab({ songs, onDelete, onEdit }: Props) {
   if (songs.length === 0) {
-    return <p className="text-text-muted text-sm py-10 text-center">Chưa có bài hát nào</p>;
+    return <p className="text-text-muted text-sm py-10 text-center">No songs yet</p>;
   }
 
   return (

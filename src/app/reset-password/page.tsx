@@ -16,17 +16,17 @@ function ResetPasswordForm() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (!token) setError("Link không hợp lệ. Vui lòng yêu cầu đặt lại mật khẩu lại.");
+    if (!token) setError("Invalid link. Please request a new password reset.");
   }, [token]);
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (form.newPassword !== form.confirm) {
-      setError("Mật khẩu xác nhận không khớp");
+      setError("Passwords do not match");
       return;
     }
     if (form.newPassword.length < 6) {
-      setError("Mật khẩu phải có ít nhất 6 ký tự");
+      setError("Password must be at least 6 characters");
       return;
     }
     setError("");
@@ -37,7 +37,7 @@ function ResetPasswordForm() {
         setSuccess(true);
         setTimeout(() => router.push("/login"), 2500);
       } else {
-        setError(res.message || "Link không hợp lệ hoặc đã hết hạn");
+        setError(res.message || "Link is invalid or has expired");
       }
     } finally {
       setLoading(false);
@@ -49,7 +49,7 @@ function ResetPasswordForm() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <span className="text-3xl font-bold text-primary">MusicApp</span>
-          <p className="text-text-secondary text-sm mt-2">Đặt lại mật khẩu</p>
+          <p className="text-text-secondary text-sm mt-2">Reset password</p>
         </div>
 
         <div className="bg-surface-elevated rounded-2xl p-8">
@@ -60,13 +60,13 @@ function ResetPasswordForm() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <p className="text-text-primary font-medium">Đặt lại mật khẩu thành công!</p>
-              <p className="text-text-secondary text-sm">Đang chuyển hướng về trang đăng nhập...</p>
+              <p className="text-text-primary font-medium">Password reset successfully!</p>
+              <p className="text-text-secondary text-sm">Redirecting to login...</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm text-text-secondary mb-1.5">Mật khẩu mới</label>
+                <label className="block text-sm text-text-secondary mb-1.5">New password</label>
                 <input
                   type="password"
                   value={form.newPassword}
@@ -78,7 +78,7 @@ function ResetPasswordForm() {
                 />
               </div>
               <div>
-                <label className="block text-sm text-text-secondary mb-1.5">Xác nhận mật khẩu</label>
+                <label className="block text-sm text-text-secondary mb-1.5">Confirm password</label>
                 <input
                   type="password"
                   value={form.confirm}
@@ -96,11 +96,11 @@ function ResetPasswordForm() {
                 disabled={loading || !token}
                 className="w-full py-3 bg-primary text-black font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 text-sm"
               >
-                {loading ? "Đang lưu..." : "Đặt lại mật khẩu"}
+                {loading ? "Saving..." : "Reset password"}
               </button>
 
               <p className="text-center text-sm text-text-secondary">
-                <Link href="/login" className="text-primary hover:underline">Quay lại đăng nhập</Link>
+                <Link href="/login" className="text-primary hover:underline">Back to login</Link>
               </p>
             </form>
           )}

@@ -4,7 +4,7 @@ export const API_ACTION_URL = API_BASE_URL;
 
 
 export const ROLE_LABELS: Record<string, string> = {
-  ADMIN: 'Quản trị viên',
-  USER: 'Người dùng',
-  GHOST: 'Khách',
+  ADMIN: 'Administrator',
+  USER: 'User',
+  GHOST: 'Guest',
 };

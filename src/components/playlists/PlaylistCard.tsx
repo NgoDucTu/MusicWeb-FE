@@ -47,7 +47,7 @@ export default function PlaylistCard({ playlist }: Props) {
         )}
       </div>
       <p className="font-semibold text-sm line-clamp-1 text-text-primary">{playlist.name}</p>
-      <p className="text-xs text-text-secondary mt-1">{playlist.songs.length} bài</p>
+      <p className="text-xs text-text-secondary mt-1">{playlist.songs.length} songs</p>
     </Link>
   );
 }

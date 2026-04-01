@@ -17,7 +17,7 @@ export default function RegisterPage() {
     e.preventDefault();
     setError("");
     if (form.password !== form.confirm) {
-      setError("Mật khẩu xác nhận không khớp");
+      setError("Passwords do not match");
       return;
     }
     setLoading(true);
@@ -27,7 +27,7 @@ export default function RegisterPage() {
         await setAuth(res.data.token);
         router.push("/");
       } else {
-        setError(res.message || "Đăng ký thất bại");
+        setError(res.message || "Registration failed");
       }
     } finally {
       setLoading(false);
@@ -39,15 +39,15 @@ export default function RegisterPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <span className="text-3xl font-bold text-primary">MusicApp</span>
-          <p className="text-text-secondary text-sm mt-2">Tạo tài khoản mới</p>
+          <p className="text-text-secondary text-sm mt-2">Create a new account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-surface-elevated rounded-2xl p-8 space-y-4">
           {[
-            { label: "Tên đăng nhập", key: "username", type: "text" },
+            { label: "Username", key: "username", type: "text" },
             { label: "Email", key: "email", type: "email" },
-            { label: "Mật khẩu", key: "password", type: "password" },
-            { label: "Xác nhận mật khẩu", key: "confirm", type: "password" },
+            { label: "Password", key: "password", type: "password" },
+            { label: "Confirm password", key: "confirm", type: "password" },
           ].map(({ label, key, type }) => (
             <div key={key}>
               <label className="block text-sm text-text-secondary mb-1.5">{label}</label>
@@ -62,12 +62,12 @@ export default function RegisterPage() {
 
           <button type="submit" disabled={loading}
             className="w-full py-3 bg-primary text-black font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 text-sm">
-            {loading ? "Đang đăng ký..." : "Đăng ký"}
+            {loading ? "Registering..." : "Register"}
           </button>
 
           <p className="text-center text-sm text-text-secondary">
-            Đã có tài khoản?{" "}
-            <Link href="/login" className="text-primary hover:underline">Đăng nhập</Link>
+            Already have an account?{" "}
+            <Link href="/login" className="text-primary hover:underline">Log in</Link>
           </p>
         </form>
       </div>

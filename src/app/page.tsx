@@ -31,9 +31,9 @@ export default function HomePage() {
   return (
     <div className="pb-24 space-y-10">
       <section>
-        <h2 className="text-2xl font-bold mb-4">Mới thêm gần đây</h2>
+        <h2 className="text-2xl font-bold mb-4">Recently Added</h2>
         {recent.length === 0 ? (
-          <p className="text-text-muted text-sm">Chưa có bài hát nào</p>
+          <p className="text-text-muted text-sm">No songs yet</p>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
             {recent.map((song) => (

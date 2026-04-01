@@ -15,7 +15,7 @@ export default function Header() {
           href="/login"
           className="text-sm font-semibold px-4 py-1.5 rounded-full bg-white text-black hover:scale-105 transition-transform"
         >
-          Đăng nhập
+          Log in
         </a>
       )}
     </header>

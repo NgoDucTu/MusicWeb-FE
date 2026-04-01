@@ -12,7 +12,7 @@ interface Props {
 
 export default function AdminUsersTab({ users }: Props) {
   if (users.length === 0) {
-    return <p className="text-text-muted text-sm py-10 text-center">Chưa có người dùng nào</p>;
+    return <p className="text-text-muted text-sm py-10 text-center">No users yet</p>;
   }
 
   return (

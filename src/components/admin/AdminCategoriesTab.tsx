@@ -42,7 +42,7 @@ export default function AdminCategoriesTab({ categories, onChange }: Props) {
 
   const handleAdd = async () => {
     if (!newName.trim() || !newDisplay.trim()) {
-      setError("Vui lòng điền đầy đủ thông tin");
+      setError("Please fill in all fields");
       return;
     }
     setBusy(true);
@@ -63,7 +63,7 @@ export default function AdminCategoriesTab({ categories, onChange }: Props) {
 
   const handleEdit = async () => {
     if (!editing || !editing.name.trim() || !editing.displayName.trim()) {
-      setError("Vui lòng điền đầy đủ thông tin");
+      setError("Please fill in all fields");
       return;
     }
     setBusy(true);
@@ -76,7 +76,7 @@ export default function AdminCategoriesTab({ categories, onChange }: Props) {
   };
 
   const handleDelete = async (cat: CategoryResponse) => {
-    if (!confirm(`Xóa category "${cat.displayName}"?`)) return;
+    if (!confirm(`Delete category "${cat.displayName}"?`)) return;
     setBusy(true);
     const res = await deleteCategoryApi(cat.id);
     setBusy(false);
@@ -95,9 +95,9 @@ export default function AdminCategoriesTab({ categories, onChange }: Props) {
           <thead>
             <tr className="bg-surface-highlight text-text-secondary text-left">
               <th className="px-4 py-3 font-medium w-8">#</th>
-              <th className="px-4 py-3 font-medium">Tên (key)</th>
-              <th className="px-4 py-3 font-medium">Tên hiển thị</th>
-              <th className="px-4 py-3 font-medium w-24 text-right">Thao tác</th>
+              <th className="px-4 py-3 font-medium">Name (key)</th>
+              <th className="px-4 py-3 font-medium">Display name</th>
+              <th className="px-4 py-3 font-medium w-24 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
@@ -198,7 +198,7 @@ export default function AdminCategoriesTab({ categories, onChange }: Props) {
           className="flex items-center gap-2 px-4 py-2 rounded-full bg-surface-highlight text-text-secondary hover:text-text-primary text-sm font-medium transition-colors"
         >
           <Plus size={15} />
-          Thêm category
+          Add category
         </button>
       )}
     </div>

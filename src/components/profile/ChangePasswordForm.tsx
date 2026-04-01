@@ -3,9 +3,9 @@ import { Lock } from "lucide-react";
 import { changePasswordApi } from "@/lib/api/users.api";
 
 const FIELDS = [
-  { key: "current", placeholder: "Mật khẩu hiện tại" },
-  { key: "next", placeholder: "Mật khẩu mới" },
-  { key: "confirm", placeholder: "Xác nhận mật khẩu mới" },
+  { key: "current", placeholder: "Current password" },
+  { key: "next", placeholder: "New password" },
+  { key: "confirm", placeholder: "Confirm new password" },
 ] as const;
 
 type FormKey = (typeof FIELDS)[number]["key"];
@@ -20,7 +20,7 @@ export default function ChangePasswordForm() {
     setError("");
     setSuccess(false);
     if (form.next !== form.confirm) {
-      setError("Mật khẩu mới không khớp");
+      setError("New passwords do not match");
       return;
     }
     const res = await changePasswordApi(form.current, form.next);
@@ -28,7 +28,7 @@ export default function ChangePasswordForm() {
       setSuccess(true);
       setForm({ current: "", next: "", confirm: "" });
     } else {
-      setError(res.message || "Mật khẩu hiện tại không đúng");
+      setError(res.message || "Current password is incorrect");
     }
   };
 
@@ -36,7 +36,7 @@ export default function ChangePasswordForm() {
     <div className="bg-surface-elevated rounded-xl p-6">
       <h3 className="font-semibold mb-4 flex items-center gap-2">
         <Lock size={16} />
-        Đổi mật khẩu
+        Change password
       </h3>
       <form onSubmit={handleSubmit} className="space-y-3">
         {FIELDS.map(({ key, placeholder }) => (
@@ -51,12 +51,12 @@ export default function ChangePasswordForm() {
           />
         ))}
         {error && <p className="text-red-400 text-xs">{error}</p>}
-        {success && <p className="text-primary text-xs">Đổi mật khẩu thành công!</p>}
+        {success && <p className="text-primary text-xs">Password changed successfully!</p>}
         <button
           type="submit"
           className="w-full py-2.5 bg-primary text-black font-semibold rounded-lg hover:bg-primary-dark transition-colors text-sm"
         >
-          Cập nhật mật khẩu
+          Update password
         </button>
       </form>
     </div>

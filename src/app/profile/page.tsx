@@ -19,7 +19,7 @@ export default function ProfilePage() {
 
   return (
     <div className="max-w-lg mx-auto pb-24">
-      <h1 className="text-3xl font-bold mb-8">Hồ sơ cá nhân</h1>
+      <h1 className="text-3xl font-bold mb-8">Profile</h1>
 
       <ProfileAvatar user={user} onUploaded={refreshUser} />
 
@@ -29,7 +29,7 @@ export default function ProfilePage() {
         onClick={() => { logout(); router.push("/login"); }}
         className="mt-4 w-full py-2.5 rounded-lg border border-red-500/30 text-red-400 text-sm font-medium hover:bg-red-500/10 transition-colors"
       >
-        Đăng xuất
+        Log out
       </button>
     </div>
   );

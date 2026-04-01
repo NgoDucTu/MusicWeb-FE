@@ -39,7 +39,7 @@ export default function UserMenu() {
             className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-text-secondary hover:text-text-primary hover:bg-surface-highlight transition-colors"
           >
             <User size={15} />
-            Hồ sơ cá nhân
+            Profile
           </button>
 
           {user.role === "ADMIN" && (
@@ -48,7 +48,7 @@ export default function UserMenu() {
               className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-text-secondary hover:text-primary hover:bg-surface-highlight transition-colors"
             >
               <ShieldCheck size={15} />
-              Quản trị
+              Admin
             </button>
           )}
 
@@ -59,7 +59,7 @@ export default function UserMenu() {
             className="flex items-center gap-2 w-full px-4 py-2.5 text-sm text-red-400 hover:bg-surface-highlight transition-colors"
           >
             <LogOut size={15} />
-            Đăng xuất
+            Log out
           </button>
         </div>
       )}

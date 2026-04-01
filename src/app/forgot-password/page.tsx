@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
       await forgotPasswordApi(email.trim());
       setSent(true);
     } catch {
-      setError("Có lỗi xảy ra, vui lòng thử lại");
+      setError("An error occurred, please try again");
     } finally {
       setLoading(false);
     }
@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <span className="text-3xl font-bold text-primary">MusicApp</span>
-          <p className="text-text-secondary text-sm mt-2">Quên mật khẩu</p>
+          <p className="text-text-secondary text-sm mt-2">Forgot password</p>
         </div>
 
         <div className="bg-surface-elevated rounded-2xl p-8">
@@ -40,18 +40,18 @@ export default function ForgotPasswordPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
               </div>
-              <p className="text-text-primary font-medium">Kiểm tra hộp thư của bạn</p>
+              <p className="text-text-primary font-medium">Check your inbox</p>
               <p className="text-text-secondary text-sm">
-                Nếu email <span className="text-text-primary">{email}</span> tồn tại, chúng tôi đã gửi link đặt lại mật khẩu. Link có hiệu lực trong <strong>15 phút</strong>.
+                If <span className="text-text-primary">{email}</span> exists, we have sent a password reset link. The link is valid for <strong>15 minutes</strong>.
               </p>
               <Link href="/login" className="block text-primary text-sm hover:underline mt-2">
-                Quay lại đăng nhập
+                Back to login
               </Link>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4">
               <p className="text-text-secondary text-sm">
-                Nhập email đăng ký của bạn, chúng tôi sẽ gửi link đặt lại mật khẩu.
+                Enter your registered email and we will send you a password reset link.
               </p>
               <div>
                 <label className="block text-sm text-text-secondary mb-1.5">Email</label>
@@ -72,11 +72,11 @@ export default function ForgotPasswordPage() {
                 disabled={loading}
                 className="w-full py-3 bg-primary text-black font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 text-sm"
               >
-                {loading ? "Đang gửi..." : "Gửi link đặt lại"}
+                {loading ? "Sending..." : "Send reset link"}
               </button>
 
               <p className="text-center text-sm text-text-secondary">
-                <Link href="/login" className="text-primary hover:underline">Quay lại đăng nhập</Link>
+                <Link href="/login" className="text-primary hover:underline">Back to login</Link>
               </p>
             </form>
           )}

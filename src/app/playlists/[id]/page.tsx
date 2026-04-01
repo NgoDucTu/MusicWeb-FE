@@ -84,7 +84,7 @@ export default function PlaylistDetailPage() {
   }
 
   if (!playlist) {
-    return <p className="text-text-muted text-center py-20">Không tìm thấy playlist</p>;
+    return <p className="text-text-muted text-center py-20">Playlist not found</p>;
   }
 
   const firstSong = playlist.songs[0];
@@ -103,7 +103,7 @@ export default function PlaylistDetailPage() {
           )}
         </div>
         <div>
-          <p className="text-xs text-text-secondary uppercase tracking-wider mb-2">Danh sách phát</p>
+          <p className="text-xs text-text-secondary uppercase tracking-wider mb-2">Playlist</p>
           {renaming ? (
             <div className="flex items-center gap-2 mb-4">
               <input
@@ -125,7 +125,7 @@ export default function PlaylistDetailPage() {
               </button>
             </div>
           )}
-          <p className="text-text-secondary text-sm">{playlist.songs.length} bài hát</p>
+          <p className="text-text-secondary text-sm">{playlist.songs.length} songs</p>
           <button onClick={handlePlayAll} disabled={!playlist.songs.length}
             className="mt-5 w-14 h-14 rounded-full bg-primary flex items-center justify-center hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed shadow-xl">
             {isPlaylistPlaying
@@ -137,7 +137,7 @@ export default function PlaylistDetailPage() {
 
       {playlist.songs.length === 0 ? (
         <p className="text-text-muted text-sm text-center py-10">
-          Playlist trống. Thêm bài hát từ trang Bài hát.
+          Playlist is empty. Add songs from the Songs page.
         </p>
       ) : (
         <div className="space-y-1">

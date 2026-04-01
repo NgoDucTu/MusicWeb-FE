@@ -32,7 +32,7 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!audioFile) { setError("Vui lòng chọn file MP3"); return; }
+    if (!audioFile) { setError("Please select an MP3 file"); return; }
     setError("");
     setLoading(true);
     try {
@@ -47,7 +47,7 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
       if (res.success) {
         onSuccess();
       } else {
-        setError(res.message || "Tải lên thất bại");
+        setError(res.message || "Upload failed");
       }
     } finally {
       setLoading(false);
@@ -58,7 +58,7 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4" onClick={onClose}>
       <div className="bg-surface-elevated rounded-2xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-5">
-          <h3 className="font-semibold text-lg">Tải lên bài hát</h3>
+          <h3 className="font-semibold text-lg">Upload song</h3>
           <button onClick={onClose} className="text-text-muted hover:text-text-primary"><X size={20} /></button>
         </div>
 
@@ -66,7 +66,7 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
           <button type="button" onClick={() => audioRef.current?.click()}
             className="w-full flex items-center justify-center gap-2 py-4 border-2 border-dashed border-surface-hover rounded-xl text-text-secondary hover:border-primary hover:text-primary transition-colors">
             <Music size={20} />
-            {audioFile ? audioFile.name : "Chọn file MP3 *"}
+            {audioFile ? audioFile.name : "Select MP3 file *"}
           </button>
           <input ref={audioRef} type="file" accept="audio/mpeg,audio/mp3" className="hidden"
             onChange={(e) => setAudioFile(e.target.files?.[0] ?? null)} />
@@ -74,14 +74,14 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
           <button type="button" onClick={() => thumbRef.current?.click()}
             className="w-full flex items-center justify-center gap-2 py-3 border-2 border-dashed border-surface-hover rounded-xl text-text-secondary hover:border-primary hover:text-primary transition-colors text-sm">
             <Upload size={16} />
-            {thumbFile ? thumbFile.name : "Chọn ảnh bìa (tùy chọn)"}
+            {thumbFile ? thumbFile.name : "Select cover image (optional)"}
           </button>
           <input ref={thumbRef} type="file" accept="image/jpeg,image/png,image/webp" className="hidden"
             onChange={(e) => setThumbFile(e.target.files?.[0] ?? null)} />
 
           {[
-            { label: "Tiêu đề *", key: "title" },
-            { label: "Nghệ sĩ *", key: "artist" },
+            { label: "Title *", key: "title" },
+            { label: "Artist *", key: "artist" },
           ].map(({ label, key }) => (
             <div key={key}>
               <label className="block text-xs text-text-secondary mb-1">{label}</label>
@@ -93,7 +93,7 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
           ))}
 
           <div>
-            <label className="block text-xs text-text-secondary mb-1">Danh mục</label>
+            <label className="block text-xs text-text-secondary mb-1">Category</label>
             <select value={form.category}
               onChange={(e) => setForm({ ...form, category: e.target.value })}
               className="w-full bg-surface-highlight px-4 py-2.5 rounded-lg text-sm text-text-primary outline-none focus:ring-2 focus:ring-primary">
@@ -104,7 +104,7 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
           </div>
 
           <div>
-            <label className="block text-xs text-text-secondary mb-1">Mô tả</label>
+            <label className="block text-xs text-text-secondary mb-1">Description</label>
             <textarea value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               rows={3} className="w-full bg-surface-highlight px-4 py-2.5 rounded-lg text-sm text-text-primary outline-none focus:ring-2 focus:ring-primary resize-none" />
@@ -114,7 +114,7 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
 
           <button type="submit" disabled={loading}
             className="w-full py-3 bg-primary text-black font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 text-sm">
-            {loading ? "Đang tải lên..." : "Tải lên"}
+            {loading ? "Uploading..." : "Upload"}
           </button>
         </form>
       </div>

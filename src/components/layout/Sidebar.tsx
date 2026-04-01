@@ -14,10 +14,10 @@ import clsx from "clsx";
 import { useAuth } from "@/contexts/AuthContext";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Trang chủ", icon: Home },
-  { href: "/search", label: "Tìm kiếm", icon: Search },
-  { href: "/songs", label: "Bài hát", icon: Music2 },
-  { href: "/playlists", label: "Danh sách phát", icon: ListMusic },
+  { href: "/", label: "Home", icon: Home },
+  { href: "/search", label: "Search", icon: Search },
+  { href: "/songs", label: "Songs", icon: Music2 },
+  { href: "/playlists", label: "Playlists", icon: ListMusic },
 ];
 
 export default function Sidebar() {
@@ -63,7 +63,7 @@ export default function Sidebar() {
             )}
           >
             <ShieldCheck size={20} />
-            Quản trị
+            Admin
           </Link>
         )}
       </nav>
@@ -83,7 +83,7 @@ export default function Sidebar() {
             href="/login"
             className="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-full bg-primary text-black font-semibold text-sm hover:bg-primary-dark transition-colors"
           >
-            Đăng nhập
+            Log in
           </Link>
         )}
       </div>

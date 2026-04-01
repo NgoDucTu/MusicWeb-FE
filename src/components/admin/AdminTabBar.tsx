@@ -6,9 +6,9 @@ interface Props {
 }
 
 const TAB_LABELS: Record<AdminTab, string> = {
-  songs: "Bài hát",
-  users: "Người dùng",
-  categories: "Thể loại",
+  songs: "Songs",
+  users: "Users",
+  categories: "Categories",
 };
 
 export default function AdminTabBar({ active, onChange }: Props) {

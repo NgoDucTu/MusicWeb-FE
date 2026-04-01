@@ -23,7 +23,7 @@ export default function LoginPage() {
         await setAuth(res.data.token);
         router.push("/");
       } else {
-        setError(res.message || "Đăng nhập thất bại");
+        setError(res.message || "Login failed");
       }
     } finally {
       setLoading(false);
@@ -35,12 +35,12 @@ export default function LoginPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <span className="text-3xl font-bold text-primary">MusicApp</span>
-          <p className="text-text-secondary text-sm mt-2">Đăng nhập để tiếp tục</p>
+          <p className="text-text-secondary text-sm mt-2">Log in to continue</p>
         </div>
 
         <form onSubmit={handleSubmit} className="bg-surface-elevated rounded-2xl p-8 space-y-4">
           <div>
-            <label className="block text-sm text-text-secondary mb-1.5">Tên đăng nhập</label>
+            <label className="block text-sm text-text-secondary mb-1.5">Username</label>
             <input type="text" value={form.username}
               onChange={(e) => setForm({ ...form, username: e.target.value })}
               className="w-full bg-surface-highlight px-4 py-3 rounded-lg text-sm text-text-primary outline-none focus:ring-2 focus:ring-primary"
@@ -48,8 +48,8 @@ export default function LoginPage() {
           </div>
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-sm text-text-secondary">Mật khẩu</label>
-              <Link href="/forgot-password" className="text-xs text-primary hover:underline">Quên mật khẩu?</Link>
+              <label className="block text-sm text-text-secondary">Password</label>
+              <Link href="/forgot-password" className="text-xs text-primary hover:underline">Forgot password?</Link>
             </div>
             <input type="password" value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
@@ -61,12 +61,12 @@ export default function LoginPage() {
 
           <button type="submit" disabled={loading}
             className="w-full py-3 bg-primary text-black font-bold rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50 text-sm">
-            {loading ? "Đang đăng nhập..." : "Đăng nhập"}
+            {loading ? "Logging in..." : "Log in"}
           </button>
 
           <p className="text-center text-sm text-text-secondary">
-            Chưa có tài khoản?{" "}
-            <Link href="/register" className="text-primary hover:underline">Đăng ký</Link>
+            Don't have an account?{" "}
+            <Link href="/register" className="text-primary hover:underline">Register</Link>
           </p>
         </form>
       </div>

@@ -6,7 +6,7 @@ import AppShell from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
   title: "MusicApp",
-  description: "Nghe nhạc trực tuyến",
+  description: "Listen to music online",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="vi">
+    <html lang="en">
       <body>
         <AuthProvider>
           <PlayerProvider>

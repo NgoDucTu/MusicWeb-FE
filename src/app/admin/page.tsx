@@ -46,7 +46,7 @@ export default function AdminPage() {
   if (loading || user?.role !== "ADMIN") return <LoadingSpinner />;
 
   const handleDelete = async (song: SongResponse) => {
-    if (!confirm(`Xóa "${song.title}"?`)) return;
+    if (!confirm(`Delete "${song.title}"?`)) return;
     const res = await deleteSongApi(song.id);
     if (res.success) setSongs((s) => s.filter((x) => x.id !== song.id));
   };
@@ -54,20 +54,20 @@ export default function AdminPage() {
   return (
     <div className="pb-24">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Quản trị</h1>
+        <h1 className="text-3xl font-bold">Admin</h1>
         <button
           onClick={() => setShowUpload(true)}
           className="flex items-center gap-2 px-4 py-2 bg-primary rounded-full text-black font-semibold text-sm hover:bg-primary-dark"
         >
           <Upload size={16} />
-          Tải lên bài hát
+          Upload song
         </button>
       </div>
 
       <div className="grid grid-cols-3 gap-4 mb-8">
-        <AdminStatCard icon={Music2} count={songs.length} label="Bài hát" />
-        <AdminStatCard icon={Users} count={users.length} label="Người dùng" />
-        <AdminStatCard icon={Tag} count={categories.length} label="Thể loại" />
+        <AdminStatCard icon={Music2} count={songs.length} label="Songs" />
+        <AdminStatCard icon={Users} count={users.length} label="Users" />
+        <AdminStatCard icon={Tag} count={categories.length} label="Categories" />
       </div>
 
       <AdminTabBar active={tab} onChange={setTab} />

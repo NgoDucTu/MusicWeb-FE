@@ -61,20 +61,20 @@ export default function SearchPage() {
     <div className="pb-24 space-y-8">
       <div className="relative max-w-xl">
         <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
-        <input type="text" placeholder="Tìm bài hát, nghệ sĩ..."
+        <input type="text" placeholder="Search songs, artists..."
           value={query} onChange={(e) => setQuery(e.target.value)}
           className="w-full pl-11 pr-4 py-3 bg-surface-highlight rounded-full text-sm text-text-primary placeholder:text-text-muted outline-none focus:ring-2 focus:ring-primary transition" />
       </div>
 
       {showResults ? (
         <section>
-          <h2 className="text-xl font-bold mb-3">Kết quả tìm kiếm</h2>
+          <h2 className="text-xl font-bold mb-3">Search results</h2>
           {loading ? (
             <div className="flex justify-center py-10">
               <div className="animate-spin w-6 h-6 border-2 border-primary border-t-transparent rounded-full" />
             </div>
           ) : results.length === 0 ? (
-            <p className="text-text-muted text-sm py-6">Không tìm thấy kết quả nào</p>
+            <p className="text-text-muted text-sm py-6">No results found</p>
           ) : (
             <div className="space-y-1">
               {results.map((song, i) => (
@@ -87,7 +87,7 @@ export default function SearchPage() {
       ) : (
         <>
           <section>
-            <h2 className="text-xl font-bold mb-4">Duyệt theo thể loại</h2>
+            <h2 className="text-xl font-bold mb-4">Browse by category</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {categoryOptions.map((opt, i) => (
                 <button key={opt.id} onClick={() => handleCategory(opt.id)}

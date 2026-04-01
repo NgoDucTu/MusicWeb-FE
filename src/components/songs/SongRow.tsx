@@ -104,7 +104,7 @@ export default function SongRow({
                   className="flex items-center gap-2 w-full px-4 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-colors"
                 >
                   <Pencil size={15} />
-                  Sửa thông tin
+                  Edit info
                 </button>
               )}
               {onAddToPlaylist && (
@@ -113,7 +113,7 @@ export default function SongRow({
                   className="flex items-center gap-2 w-full px-4 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-colors"
                 >
                   <PlusCircle size={15} />
-                  Thêm vào playlist
+                  Add to playlist
                 </button>
               )}
               {showDelete && onDelete && (
@@ -122,7 +122,7 @@ export default function SongRow({
                   className="flex items-center gap-2 w-full px-4 py-2 text-sm text-red-400 hover:bg-surface-hover transition-colors"
                 >
                   <Trash2 size={15} />
-                  Xóa bài hát
+                  Delete song
                 </button>
               )}
             </div>
