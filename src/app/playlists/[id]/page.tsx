@@ -6,12 +6,13 @@ import {
   getPlaylistApi,
   removeSongFromPlaylistApi,
   reorderPlaylistSongsApi,
+  renamePlaylistApi,
 } from "@/lib/api/playlists.api";
 import { songThumbnailUrl } from "@/lib/api/songs.api";
 import type { PlaylistResponse, SongResponse } from "@/types";
 import SongRow from "@/components/songs/SongRow";
 import { usePlayer } from "@/contexts/PlayerContext";
-import { Play, Pause, ListMusic, GripVertical } from "lucide-react";
+import { Play, Pause, ListMusic, GripVertical, Pencil, Check, X } from "lucide-react";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -20,6 +21,8 @@ export default function PlaylistDetailPage() {
   const [playlist, setPlaylist] = useState<PlaylistResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [dragging, setDragging] = useState<number | null>(null);
+  const [renaming, setRenaming] = useState(false);
+  const [renameValue, setRenameValue] = useState("");
   const { play, togglePlay, currentSong, isPlaying } = usePlayer();
   const { user } = useAuth();
 
@@ -46,6 +49,20 @@ export default function PlaylistDetailPage() {
         p ? { ...p, songs: p.songs.filter((s) => s.id !== song.id) } : p
       );
     }
+  };
+
+  const handleRenameStart = () => {
+    setRenameValue(playlist?.name ?? "");
+    setRenaming(true);
+  };
+
+  const handleRenameSubmit = async () => {
+    if (!playlist || !renameValue.trim()) return;
+    const res = await renamePlaylistApi(playlist.id, renameValue.trim());
+    if (res.success && res.data) {
+      setPlaylist((p) => p ? { ...p, name: res.data!.name } : p);
+    }
+    setRenaming(false);
   };
 
   const handleDrop = async (dropIndex: number) => {
@@ -87,7 +104,27 @@ export default function PlaylistDetailPage() {
         </div>
         <div>
           <p className="text-xs text-text-secondary uppercase tracking-wider mb-2">Danh sách phát</p>
-          <h1 className="text-4xl font-black mb-4">{playlist.name}</h1>
+          {renaming ? (
+            <div className="flex items-center gap-2 mb-4">
+              <input
+                autoFocus
+                value={renameValue}
+                onChange={(e) => setRenameValue(e.target.value)}
+                onKeyDown={(e) => { if (e.key === "Enter") handleRenameSubmit(); if (e.key === "Escape") setRenaming(false); }}
+                className="text-4xl font-black bg-transparent border-b-2 border-primary outline-none text-text-primary w-full"
+              />
+              <button onClick={handleRenameSubmit} className="text-primary hover:text-primary-dark shrink-0"><Check size={22} /></button>
+              <button onClick={() => setRenaming(false)} className="text-text-muted hover:text-text-primary shrink-0"><X size={22} /></button>
+            </div>
+          ) : (
+            <div className="flex items-center gap-3 mb-4 group/title">
+              <h1 className="text-4xl font-black">{playlist.name}</h1>
+              <button onClick={handleRenameStart}
+                className="opacity-0 group-hover/title:opacity-100 text-text-muted hover:text-text-primary transition-opacity">
+                <Pencil size={18} />
+              </button>
+            </div>
+          )}
           <p className="text-text-secondary text-sm">{playlist.songs.length} bài hát</p>
           <button onClick={handlePlayAll} disabled={!playlist.songs.length}
             className="mt-5 w-14 h-14 rounded-full bg-primary flex items-center justify-center hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed shadow-xl">

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { getCategoryOptionsApi, uploadSongApi, type CategoryOption } from "@/lib/api/songs.api";
+import { uploadSongApi } from "@/lib/api/songs.api";
+import { getCategoriesApi, type CategoryResponse } from "@/lib/api/categories.api";
 import { X, Upload, Music } from "lucide-react";
-import type { Category } from "@/types";
 
 interface Props {
   onClose: () => void;
@@ -12,21 +12,21 @@ interface Props {
 
 export default function UploadSongModal({ onClose, onSuccess }: Props) {
   const [form, setForm] = useState({
-    title: "", artist: "", genre: "", category: "" as Category, description: "",
+    title: "", artist: "", category: "", description: "",
   });
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [thumbFile, setThumbFile] = useState<File | null>(null);
-  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
+  const [categoryOptions, setCategoryOptions] = useState<CategoryResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const audioRef = useRef<HTMLInputElement>(null);
   const thumbRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    getCategoryOptionsApi().then((r) => {
+    getCategoriesApi().then((r) => {
       const opts = r.data ?? [];
       setCategoryOptions(opts);
-      if (opts.length > 0) setForm((f) => ({ ...f, category: opts[0].value }));
+      if (opts.length > 0) setForm((f) => ({ ...f, category: opts[0].name }));
     });
   }, []);
 
@@ -41,7 +41,6 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
       if (thumbFile) fd.append("thumbnail", thumbFile);
       fd.append("title", form.title);
       fd.append("artist", form.artist);
-      fd.append("genre", form.genre);
       fd.append("category", form.category);
       fd.append("description", form.description);
       const res = await uploadSongApi(fd);
@@ -83,7 +82,6 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
           {[
             { label: "Tiêu đề *", key: "title" },
             { label: "Nghệ sĩ *", key: "artist" },
-            { label: "Thể loại chi tiết", key: "genre" },
           ].map(({ label, key }) => (
             <div key={key}>
               <label className="block text-xs text-text-secondary mb-1">{label}</label>
@@ -97,10 +95,10 @@ export default function UploadSongModal({ onClose, onSuccess }: Props) {
           <div>
             <label className="block text-xs text-text-secondary mb-1">Danh mục</label>
             <select value={form.category}
-              onChange={(e) => setForm({ ...form, category: e.target.value as Category })}
+              onChange={(e) => setForm({ ...form, category: e.target.value })}
               className="w-full bg-surface-highlight px-4 py-2.5 rounded-lg text-sm text-text-primary outline-none focus:ring-2 focus:ring-primary">
               {categoryOptions.map((opt) => (
-                <option key={opt.value} value={opt.value}>{opt.display}</option>
+                <option key={opt.id} value={opt.name}>{opt.displayName}</option>
               ))}
             </select>
           </div>

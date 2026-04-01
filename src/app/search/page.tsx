@@ -1,24 +1,30 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { searchSongsApi, getCategoryOptionsApi, getSongsByCategoryApi, type CategoryOption } from "@/lib/api/songs.api";
+import { searchSongsApi, getSongsByCategoryApi } from "@/lib/api/songs.api";
+import { getCategoriesApi, type CategoryResponse } from "@/lib/api/categories.api";
 import type { SongResponse } from "@/types";
 import SongRow from "@/components/songs/SongRow";
 import AddToPlaylistModal from "@/components/playlists/AddToPlaylistModal";
 import { Search } from "lucide-react";
-import { CATEGORY_COLORS } from "@/common/constant";
+
+const PALETTE = [
+  "bg-teal-700", "bg-indigo-600", "bg-orange-600", "bg-blue-700",
+  "bg-pink-600", "bg-purple-700", "bg-yellow-700", "bg-rose-600",
+  "bg-green-700", "bg-slate-600", "bg-cyan-700", "bg-zinc-600",
+];
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SongResponse[]>([]);
-  const [categoryOptions, setCategoryOptions] = useState<CategoryOption[]>([]);
+  const [categoryOptions, setCategoryOptions] = useState<CategoryResponse[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [categoryResults, setCategoryResults] = useState<SongResponse[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedSong, setSelectedSong] = useState<SongResponse | null>(null);
 
   useEffect(() => {
-    getCategoryOptionsApi().then((r) => setCategoryOptions(r.data ?? []));
+    getCategoriesApi().then((r) => setCategoryOptions(r.data ?? []));
   }, []);
 
   const handleSearch = useCallback(async (q: string) => {
@@ -37,19 +43,19 @@ export default function SearchPage() {
     return () => clearTimeout(timer);
   }, [query, handleSearch]);
 
-  const handleCategory = async (value: string) => {
-    if (activeCategory === value) {
+  const handleCategory = async (id: string) => {
+    if (activeCategory === id) {
       setActiveCategory(null);
       setCategoryResults([]);
       return;
     }
-    setActiveCategory(value);
-    const res = await getSongsByCategoryApi(value);
+    setActiveCategory(id);
+    const res = await getSongsByCategoryApi(id);
     setCategoryResults(res.data ?? []);
   };
 
   const showResults = query.trim().length > 0;
-  const activeCategoryLabel = categoryOptions.find((o) => o.value === activeCategory)?.display ?? activeCategory;
+  const activeCategoryLabel = categoryOptions.find((o) => o.id === activeCategory)?.displayName ?? activeCategory;
 
   return (
     <div className="pb-24 space-y-8">
@@ -83,10 +89,10 @@ export default function SearchPage() {
           <section>
             <h2 className="text-xl font-bold mb-4">Duyệt theo thể loại</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {categoryOptions.map((opt) => (
-                <button key={opt.value} onClick={() => handleCategory(opt.value)}
-                  className={`${CATEGORY_COLORS[opt.value] ?? "bg-slate-600"} rounded-lg p-5 text-left font-semibold text-sm hover:opacity-90 transition-opacity ${activeCategory === opt.value ? "ring-2 ring-white" : ""}`}>
-                  {opt.display}
+              {categoryOptions.map((opt, i) => (
+                <button key={opt.id} onClick={() => handleCategory(opt.id)}
+                  className={`${PALETTE[i % PALETTE.length]} rounded-lg p-5 text-left font-semibold text-sm hover:opacity-90 transition-opacity ${activeCategory === opt.id ? "ring-2 ring-white" : ""}`}>
+                  {opt.displayName}
                 </button>
               ))}
             </div>

@@ -12,3 +12,15 @@ export const registerApi = (username: string, email: string, password: string) =
     body: { username, email, password },
     noCache: true,
   });
+
+export const forgotPasswordApi = (email: string) =>
+  postApiRequest<void>('/auth/forgot-password', {
+    body: { email },
+    noCache: true,
+  });
+
+export const resetPasswordApi = (token: string, newPassword: string) =>
+  postApiRequest<void>('/auth/reset-password', {
+    body: { token, newPassword },
+    noCache: true,
+  });

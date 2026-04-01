@@ -13,6 +13,12 @@ export const createPlaylistApi = (name: string) =>
     noCache: true,
   });
 
+export const renamePlaylistApi = (id: string, name: string, description?: string) =>
+  postApiRequest<PlaylistResponse>(`/playlists/${id}`, {
+    body: { name, description },
+    noCache: true,
+  });
+
 export const deletePlaylistApi = (id: string) =>
   deleteApiRequest<void>(`/playlists/${id}`, { noCache: true });
 

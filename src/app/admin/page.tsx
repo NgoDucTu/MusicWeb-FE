@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { getUsersApi } from "@/lib/api/users.api";
 import { getSongsApi, deleteSongApi } from "@/lib/api/songs.api";
+import EditSongModal from "@/components/songs/EditSongModal";
+import { getCategoriesApi, type CategoryResponse } from "@/lib/api/categories.api";
 import type { UserResponse, SongResponse } from "@/types";
 import { useAuth } from "@/contexts/AuthContext";
 import { useRouter } from "next/navigation";
@@ -12,15 +14,18 @@ import AdminStatCard from "@/components/admin/AdminStatCard";
 import AdminTabBar from "@/components/admin/AdminTabBar";
 import AdminSongsTab from "@/components/admin/AdminSongsTab";
 import AdminUsersTab from "@/components/admin/AdminUsersTab";
-import { Upload, Users, Music2 } from "lucide-react";
+import AdminCategoriesTab from "@/components/admin/AdminCategoriesTab";
+import { Upload, Users, Music2, Tag } from "lucide-react";
 
 export default function AdminPage() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
   const [users, setUsers] = useState<UserResponse[]>([]);
   const [songs, setSongs] = useState<SongResponse[]>([]);
-  const [tab, setTab] = useState<"songs" | "users">("songs");
+  const [categories, setCategories] = useState<CategoryResponse[]>([]);
+  const [tab, setTab] = useState<"songs" | "users" | "categories">("songs");
   const [showUpload, setShowUpload] = useState(false);
+  const [editingSong, setEditingSong] = useState<SongResponse | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -29,10 +34,11 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (user?.role !== "ADMIN") return;
-    Promise.all([getUsersApi(), getSongsApi()])
-      .then(([u, s]) => {
+    Promise.all([getUsersApi(), getSongsApi(), getCategoriesApi()])
+      .then(([u, s, c]) => {
         setUsers(u.data ?? []);
         setSongs(s.data ?? []);
+        setCategories(c.data ?? []);
       })
       .finally(() => setLoading(false));
   }, [user]);
@@ -58,15 +64,31 @@ export default function AdminPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-8">
+      <div className="grid grid-cols-3 gap-4 mb-8">
         <AdminStatCard icon={Music2} count={songs.length} label="Bài hát" />
         <AdminStatCard icon={Users} count={users.length} label="Người dùng" />
+        <AdminStatCard icon={Tag} count={categories.length} label="Thể loại" />
       </div>
 
       <AdminTabBar active={tab} onChange={setTab} />
 
-      {tab === "songs" && <AdminSongsTab songs={songs} onDelete={handleDelete} />}
+      {tab === "songs" && <AdminSongsTab songs={songs} onDelete={handleDelete} onEdit={setEditingSong} />}
       {tab === "users" && <AdminUsersTab users={users} />}
+      {tab === "categories" && (
+        <AdminCategoriesTab categories={categories} onChange={setCategories} />
+      )}
+
+      {editingSong && (
+        <EditSongModal
+          song={editingSong}
+          onClose={() => setEditingSong(null)}
+          onSuccess={async () => {
+            setEditingSong(null);
+            const res = await getSongsApi();
+            setSongs(res.data ?? []);
+          }}
+        />
+      )}
 
       {showUpload && (
         <UploadSongModal

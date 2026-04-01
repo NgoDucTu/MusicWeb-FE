@@ -1,4 +1,4 @@
-type AdminTab = "songs" | "users";
+type AdminTab = "songs" | "users" | "categories";
 
 interface Props {
   active: AdminTab;
@@ -8,12 +8,13 @@ interface Props {
 const TAB_LABELS: Record<AdminTab, string> = {
   songs: "Bài hát",
   users: "Người dùng",
+  categories: "Thể loại",
 };
 
 export default function AdminTabBar({ active, onChange }: Props) {
   return (
     <div className="flex gap-2 mb-4">
-      {(["songs", "users"] as const).map((t) => (
+      {(["songs", "users", "categories"] as const).map((t) => (
         <button
           key={t}
           onClick={() => onChange(t)}

@@ -27,7 +27,6 @@ export interface SongResponse {
   id: string;
   title: string;
   artist: string;
-  genre: string;
   category: string;
   description: string | null;
   thumbnailUrl: string | null;
@@ -46,18 +45,6 @@ export interface PlaylistResponse {
   createdAt: string;
 }
 
-export type Category =
-  | "RELAXING"
-  | "NATURE_SOUNDS"
-  | "LOFI_CHILL"
-  | "WORKOUT"
-  | "UPBEAT_POP"
-  | "FOCUS"
-  | "CLASSICAL"
-  | "JAZZ"
-  | "SAD"
-  | "ROMANTIC"
-  | "OTHER";
 
 export interface PlayerState {
   currentSong: SongResponse | null;

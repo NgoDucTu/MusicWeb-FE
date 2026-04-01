@@ -4,9 +4,10 @@ import SongRow from "@/components/songs/SongRow";
 interface Props {
   songs: SongResponse[];
   onDelete: (song: SongResponse) => void;
+  onEdit: (song: SongResponse) => void;
 }
 
-export default function AdminSongsTab({ songs, onDelete }: Props) {
+export default function AdminSongsTab({ songs, onDelete, onEdit }: Props) {
   if (songs.length === 0) {
     return <p className="text-text-muted text-sm py-10 text-center">Chưa có bài hát nào</p>;
   }
@@ -21,6 +22,7 @@ export default function AdminSongsTab({ songs, onDelete }: Props) {
           queue={songs}
           showDelete
           onDelete={onDelete}
+          onEdit={onEdit}
         />
       ))}
     </div>

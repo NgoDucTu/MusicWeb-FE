@@ -47,7 +47,10 @@ export default function LoginPage() {
               required autoFocus />
           </div>
           <div>
-            <label className="block text-sm text-text-secondary mb-1.5">Mật khẩu</label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="block text-sm text-text-secondary">Mật khẩu</label>
+              <Link href="/forgot-password" className="text-xs text-primary hover:underline">Quên mật khẩu?</Link>
+            </div>
             <input type="password" value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
               className="w-full bg-surface-highlight px-4 py-3 rounded-lg text-sm text-text-primary outline-none focus:ring-2 focus:ring-primary"

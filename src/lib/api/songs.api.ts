@@ -1,6 +1,6 @@
 import { deleteApiRequest, getApiRequest, postApiRequest } from '@/lib/make-api-request';
 import { API_BASE_URL, API_VERSION } from '@/common/constant';
-import { Category, SongResponse } from '@/types';
+import { SongResponse } from '@/types';
 
 export const getSongsApi = () =>
   getApiRequest<SongResponse[]>('/songs');
@@ -14,27 +14,19 @@ export const searchSongsApi = (q: string) =>
     noCache: true,
   });
 
-export interface CategoryOption {
-  value: Category;
-  display: string;
-}
-
-export const getCategoriesApi = async () => {
-  const res = await getApiRequest<CategoryOption[]>('/songs/categories');
-  const values = (res.data ?? []).map((item) => item.value);
-  return { ...res, data: values };
-};
-
-// Returns full {value, display} pairs — use for dropdowns/labels
-export const getCategoryOptionsApi = () =>
-  getApiRequest<CategoryOption[]>('/songs/categories');
-
-export const getSongsByCategoryApi = (category: string) =>
-  getApiRequest<SongResponse[]>(`/songs/category/${category}`);
+// categoryId is the UUID of the Category entity
+export const getSongsByCategoryApi = (categoryId: string) =>
+  getApiRequest<SongResponse[]>(`/songs/category/${categoryId}`);
 
 export const uploadSongApi = (formData: FormData) =>
   postApiRequest<SongResponse>('/songs', {
     body: formData,
+    noCache: true,
+  });
+
+export const editSongApi = (id: string, data: { title?: string; artist?: string; category?: string; description?: string }) =>
+  postApiRequest<SongResponse>(`/songs/${id}`, {
+    body: data,
     noCache: true,
   });
 

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Play, Pause, MoreHorizontal, PlusCircle, Trash2 } from "lucide-react";
+import { Play, Pause, MoreHorizontal, PlusCircle, Trash2, Pencil } from "lucide-react";
 import { songThumbnailUrl } from "@/lib/api/songs.api";
 import { usePlayer } from "@/contexts/PlayerContext";
 import type { SongResponse } from "@/types";
@@ -13,6 +13,7 @@ interface Props {
   queue?: SongResponse[];
   onAddToPlaylist?: (song: SongResponse) => void;
   onDelete?: (song: SongResponse) => void;
+  onEdit?: (song: SongResponse) => void;
   showDelete?: boolean;
 }
 
@@ -22,6 +23,7 @@ export default function SongRow({
   queue,
   onAddToPlaylist,
   onDelete,
+  onEdit,
   showDelete,
 }: Props) {
   const { play, togglePlay, currentSong, isPlaying } = usePlayer();
@@ -33,7 +35,7 @@ export default function SongRow({
     else play(song, queue);
   };
 
-  const hasMenu = onAddToPlaylist || (showDelete && onDelete);
+  const hasMenu = onAddToPlaylist || (showDelete && onDelete) || onEdit;
 
   return (
     <div className="flex items-center gap-4 px-4 py-2 rounded-md hover:bg-surface-highlight group transition-colors">
@@ -85,11 +87,6 @@ export default function SongRow({
         <p className="text-xs text-text-secondary line-clamp-1">{song.artist}</p>
       </div>
 
-      {/* Genre */}
-      <p className="text-xs text-text-muted hidden md:block w-24 text-right shrink-0">
-        {song.genre}
-      </p>
-
       {/* Context menu */}
       {hasMenu && (
         <div className="relative shrink-0" ref={menuRef}>
@@ -101,6 +98,15 @@ export default function SongRow({
           </button>
           {menuOpen && (
             <div className="absolute right-0 bottom-8 bg-surface-highlight rounded-lg shadow-xl py-1 w-48 z-20">
+              {onEdit && (
+                <button
+                  onClick={() => { onEdit(song); close(); }}
+                  className="flex items-center gap-2 w-full px-4 py-2 text-sm text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-colors"
+                >
+                  <Pencil size={15} />
+                  Sửa thông tin
+                </button>
+              )}
               {onAddToPlaylist && (
                 <button
                   onClick={() => { onAddToPlaylist(song); close(); }}
